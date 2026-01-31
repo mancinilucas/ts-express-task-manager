@@ -1,5 +1,6 @@
 import express from "express";
 import type { Express } from "express";
+import routes from "./routes";
 
 export function createApp(): Express {
   // Create a new Express application instance
@@ -8,13 +9,7 @@ export function createApp(): Express {
   // Middleware to parse JSON requests
   app.use(express.json());
 
-  app.get("/", (_req, res) => {
-    res.send("TypeScript With Express Server!");
-  });
-
-  app.get("/health", (_req, res) => {
-    res.send("Health Check: OK");
-  });
+  app.use(routes);
 
   return app;
 }
