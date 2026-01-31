@@ -1,14 +1,10 @@
 import { Router } from "express";
+import { TaskController } from "../controllers/task.controller";
 
 const router = Router();
 
-router.get("/", (req, res) =>{
-    res.json({ tasks: [] });
-});
+router.get("/", TaskController.list);
 
-router.post("/", (req, res) => {
-    const newTask = req.body;
-    res.status(201).json({ task: newTask });
-});
+router.post("/", TaskController.createTask);
 
 export default router;
