@@ -1,15 +1,15 @@
 import express from "express";
 import type { Express } from "express";
 import routes from "./routes";
+import { errorMiddleware } from "./shared/middlewares/error.middleware";
 
 export function createApp(): Express {
-  // Create a new Express application instance
   const app = express();
 
-  // Middleware to parse JSON requests
   app.use(express.json());
-
   app.use(routes);
+
+  app.use(errorMiddleware);
 
   return app;
 }
