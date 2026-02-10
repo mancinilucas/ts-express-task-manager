@@ -13,10 +13,7 @@ export class TaskController {
   }
 
   static completeTask(req: Request<{ id?: string }>, res: Response) {
-    const id = req.params.id;
-    if (typeof id !== "string") {
-      return res.status(400).json({ error: "Invalid task ID" });
-    }
+    const id = req.params.id as string;
     const task = TaskService.complete(id);
     res.json(task);
   }
