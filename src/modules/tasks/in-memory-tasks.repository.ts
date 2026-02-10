@@ -1,6 +1,7 @@
 import type { TaskRepository } from "./task.repository";
 import type { Task } from "./task.types";
 
+// In-memory implementation of TaskRepository (infrastructure layer)
 export class InMemoryTaskRepository implements TaskRepository {
   private tasks: Task[] = [];
 
