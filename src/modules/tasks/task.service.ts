@@ -1,6 +1,7 @@
 import { randomUUID } from "node:crypto";
 import type { Task } from "./task.types";
-import { NotFoundError, ValidationError } from "../../shared/errors";
+import { NotFoundError } from "../../shared/errors/not-found.error";
+import { ValidationError } from "../../shared/errors/validation.error";
 
 export class TaskService {
   private static tasks: Task[] = [];
