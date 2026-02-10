@@ -1,5 +1,6 @@
 import { randomUUID } from "node:crypto";
 import type { Task } from "./task.types";
+import { NotFoundError, ValidationError } from "../../shared/errors";
 
 export class TaskService {
   private static tasks: Task[] = [];
@@ -10,7 +11,7 @@ export class TaskService {
 
   static create(input: { title: string; description?: string }): Task {
     if (!input.title) {
-      throw new Error("Title is required");
+      throw new ValidationError("Title is required");
     }
 
     const task: Task = {
@@ -29,7 +30,7 @@ export class TaskService {
     const task = this.tasks.find((t) => t.id === taskId);
 
     if (!task) {
-      throw new Error("Task not found");
+      throw new NotFoundError(`Task with id ${taskId} not found`);
     }
 
     task.status = "done";
