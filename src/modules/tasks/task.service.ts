@@ -2,16 +2,17 @@ import { randomUUID } from "node:crypto";
 import type { Task } from "./task.types";
 import { NotFoundError } from "../../shared/errors/not-found.error";
 import { ValidationError } from "../../shared/errors/validation.error";
+import type { TaskRepository } from "./task.repository";
 
 export class TaskService {
-  private static tasks: Task[] = [];
+  constructor(private readonly repository: TaskRepository) {}
 
-  static list(): Task[] {
-    return this.tasks;
+  list(): Task[] {
+    return this.repository.findAll();
   }
 
-  static create(input: { title: string; description?: string }): Task {
-    if (!input.title) {
+  create(input: { title: string; description?: string }): Task {
+    if (!input.title || input.title.trim() === "") {
       throw new ValidationError("Title is required");
     }
 
@@ -23,18 +24,19 @@ export class TaskService {
       createdAt: new Date(),
     };
 
-    this.tasks.push(task);
+    this.repository.save(task);
     return task;
   }
 
-  static complete(taskId: string): Task {
-    const task = this.tasks.find((t) => t.id === taskId);
+  complete(taskId: string): Task {
+    const task = this.repository.findById(taskId);
 
     if (!task) {
       throw new NotFoundError(`Task with id ${taskId} not found`);
     }
 
     task.status = "done";
+    this.repository.update(task);
     return task;
   }
 }
